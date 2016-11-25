@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +58,13 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 	public Tweet deserialize(JsonNode node) throws IOException, JsonProcessingException {
 		final long id = node.path("id").asLong();
 		final String idStr = node.path("id_str").asText();
-		final String text = node.path("text").asText();
+		JsonNode fullTextNode = node.get("full_text");
+		final String text;
+		if (fullTextNode != null) {
+			text = fullTextNode.asText();
+		} else {
+			text = node.path("text").asText();
+		}
 		if (id <= 0 || text == null || text.isEmpty()) {
 			return null;
 		}
@@ -101,6 +106,17 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		tweet.setEntities(entities);
 		TwitterProfile user = toProfile(fromUserNode);
 		tweet.setUser(user);
+		Set<String> processedFields = new HashSet<String>();
+		processedFields.addAll(Arrays.asList("id", "id_str", "text", "full_text", "user", "created_at", "source", "in_reply_to_user_id",
+				"lang", "in_reply_to_status_id", "in_reply_to_screen_name", "retweet_count", "retweeted", "retweeted_status",
+				"favorited", "favorite_count", "entities"));
+		Iterator<String> fieldsIterator = node.fieldNames();
+		while (fieldsIterator.hasNext()) {
+			String field = fieldsIterator.next();
+			if (!processedFields.contains(field)) {
+				tweet.getExtraData().put(field, node.get(field));
+			}
+		}
 		return tweet;
 	}
 
@@ -128,7 +144,7 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 			return null;
 		}
 		final ObjectMapper mapper = this.createMapper();
-		Entities entities = mapper.reader(Entities.class).readValue(node);
+		Entities entities = mapper.readerFor(Entities.class).readValue(node);
 		extractTickerSymbolEntitiesFromText(text, entities);
 		return entities;
 	}
@@ -150,7 +166,7 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 			return null;
 		}
 		final ObjectMapper mapper = this.createMapper();
-		return mapper.reader(TwitterProfile.class).readValue(node);
+		return mapper.readerFor(TwitterProfile.class).readValue(node);
 	}
 
 

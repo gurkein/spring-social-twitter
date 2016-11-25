@@ -83,6 +83,7 @@ class ListTemplate extends AbstractTwitterOperations implements ListOperations {
 		MultiValueMap<String, String> parameters = PagingUtils.buildPagingParametersWithCount(pageSize, sinceId, maxId);
 		parameters.set("list_id", String.valueOf(listId));
 		parameters.set("include_entities", "true");
+		parameters.add("tweet_mode", "extended");
 		return restTemplate.getForObject(buildUri("lists/statuses.json", parameters), TweetList.class);
 	}
 
@@ -100,6 +101,7 @@ class ListTemplate extends AbstractTwitterOperations implements ListOperations {
 		parameters.set("owner_screen_name", screenName);
 		parameters.set("slug", listSlug);
 		parameters.set("include_entities", "true");
+		parameters.add("tweet_mode", "extended");
 		return restTemplate.getForObject(buildUri("lists/statuses.json", parameters), TweetList.class);
 	}
 

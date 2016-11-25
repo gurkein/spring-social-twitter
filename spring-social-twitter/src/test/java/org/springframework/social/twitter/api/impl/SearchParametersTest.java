@@ -40,7 +40,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testSimple() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring");
@@ -51,7 +51,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testGeoCode() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&geocode=37.781157%2C-122.39872%2C10mi&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&geocode=37.781157%2C-122.39872%2C10mi&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").geoCode(new GeoCode(37.781157, -122.39872, 10, GeoCode.Unit.MILE));
@@ -62,7 +62,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testLang() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&lang=nl&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&lang=nl&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").lang("nl");
@@ -73,7 +73,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testLocale() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&locale=ja&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&locale=ja&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").locale("ja");
@@ -84,7 +84,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testResultType() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&result_type=popular&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&result_type=popular&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").resultType(SearchParameters.ResultType.POPULAR);
@@ -95,7 +95,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testCount() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=25"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=25&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").count(25);
@@ -106,7 +106,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testUntil() throws ParseException {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&until=2012-01-31"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&until=2012-01-31&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").until(new SimpleDateFormat("yyyy-MM-dd").parse("2012-01-31"));
@@ -117,7 +117,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testSinceId() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&since_id=10"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&since_id=10&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").sinceId(10);
@@ -128,7 +128,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testMaxId() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&max_id=999"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&max_id=999&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 
@@ -140,7 +140,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void testIncludeEntities() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&include_entities=false"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&include_entities=false&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring").includeEntities(false);
@@ -153,7 +153,7 @@ public class SearchParametersTest extends AbstractTwitterApiTest {
 	public void testComplex() throws ParseException {
 		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring"
 						+ "&geocode=37.781157%2C-122.39872%2C10mi&lang=nl&locale=ja&result_type=popular"
-						+ "&count=25&until=2012-01-31&since_id=10&max_id=999&include_entities=false"))
+						+ "&count=25&until=2012-01-31&since_id=10&max_id=999&include_entities=false&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchParameters p = new SearchParameters("#spring")

@@ -40,7 +40,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 			.andExpect(method(POST))
 			.andRespond(withSuccess(jsonResource("media-upload"), APPLICATION_JSON));
 		
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message&media_ids=553639437322563584"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));
@@ -52,7 +52,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 
 	@Test
 	public void updateStatus_withLocation_DEPRECATED() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message&lat=123.1&long=-111.2"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));
@@ -66,7 +66,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 
 	@Test
 	public void updateStatus_withLocationAndDisplayCoordinates_DEPRECATED() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message&lat=123.1&long=-111.2&display_coordinates=true"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));
@@ -81,7 +81,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 
 	@Test
 	public void updateStatus_withInReplyToStatus_DEPRECATED() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message+in+reply+to+%40someone&in_reply_to_status_id=123456"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));
@@ -95,7 +95,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 	
 	@Test
 	public void updateStatus_withWrapLinks_DEPRECATED() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message&wrap_links=true"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));
@@ -113,7 +113,7 @@ public class TimelineTemplateDeprecatedMethodsTest extends AbstractTwitterApiTes
 			.andExpect(method(POST))
 			.andRespond(withSuccess(jsonResource("media-upload"), APPLICATION_JSON));
 	
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/update.json?tweet_mode=extended"))
 				.andExpect(method(POST))
 				.andExpect(content().string("status=Test+Message&lat=123.1&long=-111.2&media_ids=553639437322563584"))
 				.andRespond(withSuccess(jsonResource("status"), APPLICATION_JSON));

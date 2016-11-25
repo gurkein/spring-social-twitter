@@ -38,7 +38,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 
 	@Test
 	public void search_queryOnly() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchResults searchResults = twitter.searchOperations().search("#spring");
@@ -50,7 +50,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 	
 	@Test
 	public void search_pageAndResultsPerPage() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchResults searchResults = twitter.searchOperations().search("#spring", 10);
@@ -62,7 +62,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 	
 	@Test
 	public void search_sinceAndMaxId() {
-		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&since_id=123&max_id=54321"))
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&since_id=123&max_id=54321&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
 		SearchResults searchResults = twitter.searchOperations().search("#spring", 10, 123, 54321);
@@ -74,7 +74,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 	
 	@Test
 	public void search_queryOnly_appAuthorization() {
-		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50"))
+		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=50&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andExpect(header("Authorization", "Bearer APP_ACCESS_TOKEN"))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
@@ -87,7 +87,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 	
 	@Test
 	public void search_pageAndResultsPerPage_appAuthorization() {
-		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10"))
+		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andExpect(header("Authorization", "Bearer APP_ACCESS_TOKEN"))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
@@ -100,7 +100,7 @@ public class SearchTemplateTest extends AbstractTwitterApiTest {
 	
 	@Test
 	public void search_sinceAndMaxId_appAuthorization() {
-		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&since_id=123&max_id=54321"))
+		appAuthMockServer.expect(requestTo("https://api.twitter.com/1.1/search/tweets.json?q=%23spring&count=10&since_id=123&max_id=54321&tweet_mode=extended"))
 				.andExpect(method(GET))
 				.andExpect(header("Authorization", "Bearer APP_ACCESS_TOKEN"))
 				.andRespond(withSuccess(jsonResource("search"), APPLICATION_JSON));
