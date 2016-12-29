@@ -108,7 +108,7 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		Set<String> processedFields = new HashSet<String>();
 		processedFields.addAll(Arrays.asList("id", "id_str", "text", "full_text", "user", "created_at", "source", "in_reply_to_user_id",
 				"lang", "in_reply_to_status_id", "in_reply_to_screen_name", "retweet_count", "retweeted", "retweeted_status",
-				"favorited", "favorite_count", "entities"));
+				"favorited", "favorite_count", "entities", "extended_entities"));
 		Iterator<String> fieldsIterator = node.fieldNames();
 		while (fieldsIterator.hasNext()) {
 			String field = fieldsIterator.next();
