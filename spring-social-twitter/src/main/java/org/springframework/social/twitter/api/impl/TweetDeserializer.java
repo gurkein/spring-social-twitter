@@ -24,10 +24,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.social.twitter.api.Entities;
-import org.springframework.social.twitter.api.TickerSymbolEntity;
-import org.springframework.social.twitter.api.Tweet;
-import org.springframework.social.twitter.api.TwitterProfile;
+import org.springframework.social.twitter.api.*;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -104,6 +101,8 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		tweet.setFavoriteCount(favoriteCount);
 		Entities entities = toEntities(node.get("entities"), text);
 		tweet.setEntities(entities);
+		ExtendedEntities extendedEntities = toExtendedEntities(node.get("extended_entities"), text);
+		tweet.setExtendedEntities(extendedEntities);
 		TwitterProfile user = toProfile(fromUserNode);
 		tweet.setUser(user);
 		Set<String> processedFields = new HashSet<String>();
@@ -147,6 +146,14 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		Entities entities = mapper.readerFor(Entities.class).readValue(node);
 		extractTickerSymbolEntitiesFromText(text, entities);
 		return entities;
+	}
+
+	private ExtendedEntities toExtendedEntities(final JsonNode node, String text) throws IOException {
+		if (null == node || node.isNull() || node.isMissingNode()) {
+			return null;
+		}
+		final ObjectMapper mapper = this.createMapper();
+		return mapper.readerFor(ExtendedEntities.class).readValue(node);
 	}
 
 	private void extractTickerSymbolEntitiesFromText(String text, Entities entities) {

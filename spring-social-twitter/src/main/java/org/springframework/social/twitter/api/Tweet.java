@@ -44,6 +44,7 @@ public class Tweet extends TwitterObject implements Serializable {
 	private boolean favorited;
 	private Integer favoriteCount;
 	private Entities entities;
+	private ExtendedEntities extendedEntities;
 	private TwitterProfile user;
 
 	/**
@@ -240,6 +241,14 @@ public class Tweet extends TwitterObject implements Serializable {
 		this.entities = ent;
 	}
 
+	public ExtendedEntities getExtendedEntities() {
+		return this.extendedEntities;
+	}
+
+	public void setExtendedEntities(final ExtendedEntities ent) {
+		this.extendedEntities = ent;
+	}
+
 	public boolean hasMentions() {
 		if (this.entities == null) {
 			return false;
@@ -321,6 +330,9 @@ public class Tweet extends TwitterObject implements Serializable {
 		if (entities != null ? !entities.equals(tweet.entities) : tweet.entities != null) {
 			return false;
 		}
+		if (extendedEntities != null ? !extendedEntities.equals(tweet.extendedEntities) : tweet.extendedEntities != null) {
+			return false;
+		}
 		if (fromUser != null ? !fromUser.equals(tweet.fromUser) : tweet.fromUser != null) {
 			return false;
 		}
@@ -380,6 +392,7 @@ public class Tweet extends TwitterObject implements Serializable {
 		result = 31 * result + (retweeted ? 1 : 0);
 		result = 31 * result + (retweetedStatus != null ? retweetedStatus.hashCode() : 0);
 		result = 31 * result + (entities != null ? entities.hashCode() : 0);
+		result = 31 * result + (extendedEntities != null ? extendedEntities.hashCode() : 0);
 		result = 31 * result + (user != null ? user.hashCode() : 0);
 		return result;
 	}
