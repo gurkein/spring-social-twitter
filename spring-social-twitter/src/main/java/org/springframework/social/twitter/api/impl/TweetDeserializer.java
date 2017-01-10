@@ -93,6 +93,12 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		tweet.setRetweeted(retweeted);
 		Tweet retweetedStatus = retweetedStatusNode != null ? this.deserialize(retweetedStatusNode) : null;
 		tweet.setRetweetedStatus(retweetedStatus);
+		JsonNode quotedStatusNode = node.get("quoted_status");
+		Tweet quotedStatus = quotedStatusNode != null ? this.deserialize(quotedStatusNode) : null;
+		tweet.setQuotedStatus(quotedStatus);
+		JsonNode quotedStatusIdNode = node.get("quoted_status_id");
+		Long quotedStatusId = quotedStatusIdNode != null && !quotedStatusIdNode.isNull() ? quotedStatusIdNode.asLong() : null;
+		tweet.setQuotedStatusId(quotedStatusId);
 		JsonNode favoritedNode = node.get("favorited");
 		boolean favorited = favoritedNode != null && !favoritedNode.isNull() ? favoritedNode.asBoolean() : false;
 		tweet.setFavorited(favorited);
@@ -108,12 +114,13 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		Set<String> processedFields = new HashSet<String>();
 		processedFields.addAll(Arrays.asList("id", "id_str", "text", "full_text", "user", "created_at", "source", "in_reply_to_user_id",
 				"lang", "in_reply_to_status_id", "in_reply_to_screen_name", "retweet_count", "retweeted", "retweeted_status",
-				"favorited", "favorite_count", "entities", "extended_entities"));
+				"favorited", "favorite_count", "entities", "extended_entities", "quoted_status", "quoted_status_id"));
 		Iterator<String> fieldsIterator = node.fieldNames();
+		final ObjectMapper mapper = this.createMapper();
 		while (fieldsIterator.hasNext()) {
 			String field = fieldsIterator.next();
 			if (!processedFields.contains(field)) {
-				tweet.getExtraData().put(field, node.get(field));
+				tweet.getExtraData().put(field, mapper.convertValue(node.get(field), Object.class));
 			}
 		}
 		return tweet;

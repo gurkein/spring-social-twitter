@@ -41,6 +41,8 @@ public class Tweet extends TwitterObject implements Serializable {
 	private Integer retweetCount;
 	private boolean retweeted;
 	private Tweet retweetedStatus;
+	private Long quotedStatusId;
+	private Tweet quotedStatus;
 	private boolean favorited;
 	private Integer favoriteCount;
 	private Entities entities;
@@ -217,6 +219,26 @@ public class Tweet extends TwitterObject implements Serializable {
 		return this.retweetedStatus != null;
 	}
 
+	public Long getQuotedStatusId() {
+		return quotedStatusId;
+	}
+
+	public void setQuotedStatusId(Long quotedStatusId) {
+		this.quotedStatusId = quotedStatusId;
+	}
+
+	public Tweet getQuotedStatus() {
+		return quotedStatus;
+	}
+
+	public void setQuotedStatus(final Tweet quotedStatus) {
+		this.quotedStatus = quotedStatus;
+	}
+
+	public boolean isQuoted() {
+		return this.quotedStatus != null;
+	}
+
 	public void setFavorited(boolean favorited) {
 		this.favorited = favorited;
 	}
@@ -357,6 +379,12 @@ public class Tweet extends TwitterObject implements Serializable {
 		if (retweetedStatus != null ? !retweetedStatus.equals(tweet.retweetedStatus) : tweet.retweetedStatus != null) {
 			return false;
 		}
+		if (quotedStatus != null ? !quotedStatus.equals(tweet.quotedStatus) : tweet.quotedStatus != null) {
+			return false;
+		}
+		if (quotedStatusId != null ? !quotedStatusId.equals(tweet.quotedStatusId) : tweet.quotedStatusId != null) {
+			return false;
+		}
 		if (source != null ? !source.equals(tweet.source) : tweet.source != null) {
 			return false;
 		}
@@ -391,6 +419,8 @@ public class Tweet extends TwitterObject implements Serializable {
 		result = 31 * result + (retweetCount != null ? retweetCount.hashCode() : 0);
 		result = 31 * result + (retweeted ? 1 : 0);
 		result = 31 * result + (retweetedStatus != null ? retweetedStatus.hashCode() : 0);
+		result = 31 * result + (quotedStatus != null ? quotedStatus.hashCode() : 0);
+		result = 31 * result + (quotedStatusId != null ? quotedStatusId.hashCode() : 0);
 		result = 31 * result + (entities != null ? entities.hashCode() : 0);
 		result = 31 * result + (extendedEntities != null ? extendedEntities.hashCode() : 0);
 		result = 31 * result + (user != null ? user.hashCode() : 0);
