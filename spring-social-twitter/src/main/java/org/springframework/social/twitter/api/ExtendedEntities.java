@@ -30,7 +30,12 @@ public class ExtendedEntities extends TwitterObject implements Serializable {
 
 	private List<MediaEntity> media = new LinkedList<MediaEntity>();
 
+	private ExtendedEntities() {
+		super();
+	}
+
 	public ExtendedEntities(List<MediaEntity> media) {
+		super();
 		this.media = media;
 	}
 

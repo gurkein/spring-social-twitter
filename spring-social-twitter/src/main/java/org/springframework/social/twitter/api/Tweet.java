@@ -49,6 +49,10 @@ public class Tweet extends TwitterObject implements Serializable {
 	private ExtendedEntities extendedEntities;
 	private TwitterProfile user;
 
+	private Tweet() {
+		this(0, null, null, null, null, null, null, 0, null, null);
+	}
+
 	/**
 	 * Constructs a Tweet
 	 * 
@@ -86,6 +90,7 @@ public class Tweet extends TwitterObject implements Serializable {
 	 * @deprecated Use other constructor with String ID instead.
 	 */
 	public Tweet(long id, String idStr, String text, Date createdAt, String fromUser, String profileImageUrl, Long toUserId, long fromUserId, String languageCode, String source) {
+		super();
 		this.id = id;
 		this.idStr = idStr;
 		this.text = text;
