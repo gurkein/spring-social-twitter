@@ -39,7 +39,7 @@ public class Entities extends TwitterObject implements Serializable {
 	private List<TickerSymbolEntity> tickerSymbols = new LinkedList<TickerSymbolEntity>();
 
 	private Entities() {
-		super();
+		this(null, null, null, null);
 	}
 
 	public Entities(List<UrlEntity> urls, List<HashTagEntity> tags, List<MentionEntity> mentions, List<MediaEntity> media) {
