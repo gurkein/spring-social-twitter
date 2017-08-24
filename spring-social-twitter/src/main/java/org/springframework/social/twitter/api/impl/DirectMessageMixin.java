@@ -17,6 +17,7 @@ package org.springframework.social.twitter.api.impl;
 
 import java.util.Date;
 
+import com.github.jonpeterson.jackson.module.interceptor.JsonInterceptors;
 import org.springframework.social.twitter.api.TwitterProfile;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @author Craig Walls
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInterceptors(beforeDeserialization = RawJsonDeserializationInterceptor.class)
 abstract class DirectMessageMixin extends TwitterObjectMixin {
 	@JsonCreator
 	DirectMessageMixin(

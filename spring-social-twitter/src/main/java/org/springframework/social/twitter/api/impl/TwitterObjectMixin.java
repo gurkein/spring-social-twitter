@@ -1,7 +1,7 @@
 package org.springframework.social.twitter.api.impl;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Annotated mixin to add Jackson annotations to TwitterObject. 
@@ -13,4 +13,9 @@ abstract class TwitterObjectMixin {
 	@JsonAnySetter
 	abstract void add(String key, Object value);
 
+	@JsonIgnore
+	abstract JsonNode getRawJson();
+
+	@JsonProperty("rawJson")
+	abstract void setRawJson(JsonNode rawJson);
 }

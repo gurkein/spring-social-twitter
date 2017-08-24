@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Base class for all Twitter types.
@@ -28,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 public class TwitterObject {
 
 	private Map<String, Object> extraData;
+
+	private JsonNode rawJson;
 
 	public TwitterObject() {
 		this.extraData = new HashMap<String, Object>();
@@ -47,6 +50,14 @@ public class TwitterObject {
 	 */
 	protected void add(String key, Object value) {
 		extraData.put(key, value);
+	}
+
+	public JsonNode getRawJson() {
+		return rawJson;
+	}
+
+	public void setRawJson(JsonNode rawJson) {
+		this.rawJson = rawJson;
 	}
 
 }

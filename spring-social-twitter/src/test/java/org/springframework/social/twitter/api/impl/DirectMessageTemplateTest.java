@@ -138,6 +138,7 @@ public class DirectMessageTemplateTest extends AbstractTwitterApiTest {
 		assertEquals("kdonald", message.getSender().getScreenName());
 		assertEquals(24680, message.getRecipient().getId());
 		assertEquals("rclarkson", message.getRecipient().getScreenName());
+		assertNotNull(message.getRawJson());
 	}
 	
 	@Test

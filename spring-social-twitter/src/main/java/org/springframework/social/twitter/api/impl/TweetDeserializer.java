@@ -123,6 +123,7 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 				tweet.getExtraData().put(field, mapper.convertValue(node.get(field), Object.class));
 			}
 		}
+		tweet.setRawJson(node.deepCopy());
 		return tweet;
 	}
 

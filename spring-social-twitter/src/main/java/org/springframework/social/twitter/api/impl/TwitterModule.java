@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  * Jackson module for registering mixin annotations against Twitter model classes.
  */
 @SuppressWarnings("serial")
-class TwitterModule extends SimpleModule {
+public class TwitterModule extends SimpleModule {
 
 	public TwitterModule() {
 		super("TwitterModule");

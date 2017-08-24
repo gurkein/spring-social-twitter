@@ -15,6 +15,7 @@
  */
 package org.springframework.social.twitter.api.impl;
 
+import com.github.jonpeterson.jackson.module.interceptor.JsonInterceptorModule;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
@@ -160,7 +161,10 @@ public class TwitterTemplate extends AbstractOAuth1ApiBinding implements Twitter
 	@Override
 	protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
 		MappingJackson2HttpMessageConverter converter = super.getJsonMessageConverter();
-		converter.setObjectMapper(new ObjectMapper().registerModule(new TwitterModule()));		
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new TwitterModule());
+		objectMapper.registerModule(new JsonInterceptorModule());
+		converter.setObjectMapper(objectMapper);
 		return converter;
 	}
 	
