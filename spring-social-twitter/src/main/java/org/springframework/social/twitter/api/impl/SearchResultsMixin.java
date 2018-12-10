@@ -35,6 +35,6 @@ abstract class SearchResultsMixin extends TwitterObjectMixin {
 	@JsonCreator
 	SearchResultsMixin(
 			@JsonProperty("statuses") List<Tweet> tweets, 
-			@JsonProperty("search_metadata") @JsonDeserialize(using = SearchMetadataDeserializer.class) SearchMetadata metadata) {}
+			@JsonProperty("search_metadata") SearchMetadata metadata) {}
 	
 }

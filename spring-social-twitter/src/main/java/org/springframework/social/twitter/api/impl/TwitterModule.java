@@ -40,6 +40,7 @@ public class TwitterModule extends SimpleModule {
 		context.setMixInAnnotations(UserList.class, UserListMixin.class);
 		context.setMixInAnnotations(Tweet.class, TweetMixin.class);
 		context.setMixInAnnotations(SearchResults.class, SearchResultsMixin.class);
+		context.setMixInAnnotations(SearchMetadata.class, SearchMetadataMixin.class);
 		context.setMixInAnnotations(Place.class, PlaceMixin.class);
 		context.setMixInAnnotations(SimilarPlacesResponse.class, SimilarPlacesMixin.class);
 		context.setMixInAnnotations(Entities.class, EntitiesMixin.class);

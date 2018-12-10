@@ -4,23 +4,33 @@ package org.springframework.social.twitter.api;
  * Represents the cursor metadata associated with a search query via the Twitter Search API.
  * @author Jeremy Appel
  */
-public class SearchMetadata {
+public class SearchMetadata extends TwitterObject {
 	
-	private final long max_id;	
-	private final long since_id;
-	
-	public SearchMetadata(long max_id, long since_id) {
-		this.max_id = max_id;
-		this.since_id = since_id;
+	private final long maxId;
+	private final long sinceId;
+	private final String maxIdStr;
+	private final String sinceIdStr;
+
+	public SearchMetadata(long maxId, long sinceId, String maxIdStr, String sinceIdStr) {
+		this.maxId = maxId;
+		this.sinceId = sinceId;
+		this.maxIdStr = maxIdStr;
+		this.sinceIdStr = sinceIdStr;
 	}
 
 	public long getMaxId() {
-		return max_id;
+		return maxId;
 	}
 
 	public long getSinceId() {
-		return since_id;
+		return sinceId;
 	}
 
+	public String getMaxIdStr() {
+		return maxIdStr;
+	}
 
+	public String getSinceIdStr() {
+		return sinceIdStr;
+	}
 }
