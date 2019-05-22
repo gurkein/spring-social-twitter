@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.github.jonpeterson.jackson.module.interceptor.JsonInterceptors;
 
 import java.util.Date;
 
@@ -27,6 +28,7 @@ import java.util.Date;
  * @author Craig Walls
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonInterceptors(beforeDeserialization = RawJsonDeserializationInterceptor.class)
 abstract class TwitterProfileMixin extends TwitterObjectMixin {
 	@JsonCreator
 	TwitterProfileMixin(
