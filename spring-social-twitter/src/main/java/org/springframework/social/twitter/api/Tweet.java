@@ -48,6 +48,7 @@ public class Tweet extends TwitterObject implements Serializable {
 	private Entities entities;
 	private ExtendedEntities extendedEntities;
 	private TwitterProfile user;
+	private ExtendedTweet extendedTweet;
 
 	private Tweet() {
 		this(0, null, null, null, null, null, null, 0, null, null);
@@ -274,6 +275,14 @@ public class Tweet extends TwitterObject implements Serializable {
 
 	public void setExtendedEntities(final ExtendedEntities ent) {
 		this.extendedEntities = ent;
+	}
+
+	public ExtendedTweet getExtendedTweet() {
+		return extendedTweet;
+	}
+
+	public void setExtendedTweet(ExtendedTweet extendedTweet) {
+		this.extendedTweet = extendedTweet;
 	}
 
 	public boolean hasMentions() {
