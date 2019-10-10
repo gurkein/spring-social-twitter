@@ -309,7 +309,20 @@ public class TimelineTemplateTest extends AbstractTwitterApiTest {
 		assertEquals(28, tickerSymbols.get(2).getIndices()[0]);
 		assertEquals(33, tickerSymbols.get(2).getIndices()[1]);
 	}
-	
+
+	@Test
+	public void getStatus_extendedTweetMention() {
+		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/show/12345.json?include_entities=true&tweet_mode=extended"))
+				.andExpect(method(GET))
+				.andRespond(withSuccess(jsonResource("extendedTweet-mention"), APPLICATION_JSON));
+
+		Tweet tweet = twitter.timelineOperations().getStatus(12345);
+
+		assertEquals(7, tweet.getEntities().getMentions().size());
+		assertEquals(26, tweet.getExtendedTweet().getEntities().getMentions().size());
+	}
+
+
 	@Test
 	public void getStatusOEmbed() {
 		mockServer.expect(requestTo("https://api.twitter.com/1.1/statuses/oembed.json?id=357251561744916480"))

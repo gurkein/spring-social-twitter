@@ -111,10 +111,12 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		tweet.setExtendedEntities(extendedEntities);
 		TwitterProfile user = toProfile(fromUserNode);
 		tweet.setUser(user);
+		ExtendedTweet extendedTweet = toExtendedTweet(node.get("extended_tweet"));
+		tweet.setExtendedTweet(extendedTweet);
 		Set<String> processedFields = new HashSet<String>();
 		processedFields.addAll(Arrays.asList("id", "id_str", "text", "full_text", "user", "created_at", "source", "in_reply_to_user_id",
 				"lang", "in_reply_to_status_id", "in_reply_to_screen_name", "retweet_count", "retweeted", "retweeted_status",
-				"favorited", "favorite_count", "entities", "extended_entities", "quoted_status", "quoted_status_id"));
+				"favorited", "favorite_count", "entities", "extended_entities", "quoted_status", "quoted_status_id", "extended_tweet"));
 		Iterator<String> fieldsIterator = node.fieldNames();
 		final ObjectMapper mapper = this.createMapper();
 		while (fieldsIterator.hasNext()) {
@@ -162,6 +164,14 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		}
 		final ObjectMapper mapper = this.createMapper();
 		return mapper.readerFor(ExtendedEntities.class).readValue(node);
+	}
+
+	private ExtendedTweet toExtendedTweet(final JsonNode node) throws IOException {
+		if (null == node || node.isNull() || node.isMissingNode()) {
+			return null;
+		}
+		final ObjectMapper mapper = this.createMapper();
+		return mapper.readerFor(ExtendedTweet.class).readValue(node);
 	}
 
 	private void extractTickerSymbolEntitiesFromText(String text, Entities entities) {
