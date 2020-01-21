@@ -23,19 +23,9 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.social.DuplicateStatusException;
-import org.springframework.social.InternalServerErrorException;
-import org.springframework.social.InvalidAuthorizationException;
-import org.springframework.social.MissingAuthorizationException;
-import org.springframework.social.NotAuthorizedException;
-import org.springframework.social.OperationNotPermittedException;
-import org.springframework.social.RateLimitExceededException;
-import org.springframework.social.ResourceNotFoundException;
-import org.springframework.social.RevokedAuthorizationException;
-import org.springframework.social.ServerDownException;
-import org.springframework.social.ServerOverloadedException;
-import org.springframework.social.UncategorizedApiException;
+import org.springframework.social.*;
 import org.springframework.social.twitter.api.InvalidMessageRecipientException;
+import org.springframework.social.twitter.api.LabException;
 import org.springframework.social.twitter.api.MessageTooLongException;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 
@@ -72,9 +62,22 @@ class TwitterErrorHandler extends DefaultResponseErrorHandler {
 		HttpStatus statusCode = response.getStatusCode();		
 		Map<String, Object> errorMap = extractErrorDetailsFromResponse(response);
 
+		boolean isFromLab = false;
+		String errorType = "";
+		String errorTitle = "";
+
 		String errorText = "";
 		if (errorMap.containsKey("error")) {
 			errorText = (String) errorMap.get("error");
+		} else if (errorMap.containsKey("detail")) {  // lab errors
+			isFromLab = true;
+			errorText = (String) errorMap.get("detail");
+			if (errorMap.containsKey("type")) {
+				errorType = (String) errorMap.get("type");
+			}
+			if (errorMap.containsKey("title")) {
+				errorTitle = (String) errorMap.get("title");
+			}
 		} else if(errorMap.containsKey("errors")) {
 			Object errors = errorMap.get("errors");			
 			if (errors instanceof List) {
@@ -94,6 +97,9 @@ class TwitterErrorHandler extends DefaultResponseErrorHandler {
 		if (statusCode == HttpStatus.BAD_REQUEST) {
 			if (errorText.contains("Rate limit exceeded.")) {
 				throw new RateLimitExceededException("twitter");
+			}
+			if (isFromLab) {
+				throw new LabException(errorText, errorType, errorTitle);
 			}
 		} else if (statusCode == HttpStatus.UNAUTHORIZED) {
 			if (errorText == null) {
