@@ -17,11 +17,15 @@ package org.springframework.social.twitter.api.impl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.social.twitter.api.Stream;
 import org.springframework.social.twitter.api.StreamingException;
 
 abstract class ThreadedStreamConsumer extends Thread implements Stream {
-		
+	private Log logger = LogFactory.getLog(this.getClass());
+
 	private AtomicBoolean open;
 
 	private StreamReader streamReader;
@@ -34,41 +38,53 @@ abstract class ThreadedStreamConsumer extends Thread implements Stream {
 	public void run() {
 		long timeToSleep = 250;
 		streamReader = null;
+		logger.info("Starting stream...");
 		
-		while(open.get()) {
+		while (open.get()) {
 			try {
-				if(streamReader == null) {
+				if (streamReader == null) {
 					streamReader = getStreamReader();
 					timeToSleep = MIN_WAIT;
 				}
 				streamReader.next();
 			} catch (StreamingException e) {
 				// if a valid connection drops, reconnect immediately
+				logger.warn("Connection closed.");
 				streamReader = null;
 			} catch (StreamCreationException e) {
-				if(e.getHttpStatus() != null) {
-					// Back off exponentially
-					if(timeToSleep == MIN_WAIT) {
-						timeToSleep = 5000;
-					}
-					sleepBeforeRetry(timeToSleep);
-					timeToSleep = timeToSleep * 2;				
-					// TODO: Should eventually fail...repeated tries could cause ban
-					if(timeToSleep > HTTP_ERROR_SLEEP_MAX) {
+				if (e.getHttpStatus() != null) {
+					logger.error(String.format("Stream http connection returned %d: %s", e.getHttpStatus().value(), e.getHttpStatus().getReasonPhrase()));
+					if (e.getHttpStatus().equals(HttpStatus.UNAUTHORIZED)) {
+						logger.error("Stream is unauthorized. Closing...");
 						close();
+					} else {
+						// Back off exponentially
+						if (timeToSleep == MIN_WAIT) {
+							timeToSleep = 5000;
+						}
+						logger.warn(String.format("Sleeping for %d ms before retry...", timeToSleep));
+						sleepBeforeRetry(timeToSleep);
+						timeToSleep = timeToSleep * 2;
+						// TODO: Should eventually fail...repeated tries could cause ban
+						if (timeToSleep > HTTP_ERROR_SLEEP_MAX) {
+							close();
+						}
 					}
 				} else {
-					if(open.get()) {
+					logger.error("No network!");
+					if (open.get()) {
 						// Back off linearly
-						if(timeToSleep == MIN_WAIT) {
+						if (timeToSleep == MIN_WAIT) {
 							timeToSleep = 250;
 						}
+						logger.warn(String.format("Sleeping for %d ms before retry...", timeToSleep));
 						sleepBeforeRetry(timeToSleep);
 						timeToSleep = Math.min(timeToSleep + 250, NETWORK_ERROR_SLEEP_MAX);
 					}
 				}
 			}
-		}		
+		}
+		logger.info("Exiting stream...");
 	}
 	
 	public void open() {
@@ -77,7 +93,7 @@ abstract class ThreadedStreamConsumer extends Thread implements Stream {
 
 	public void close() {
 		open.set(false);
-		if(streamReader != null) {
+		if (streamReader != null) {
 			streamReader.close();
 		}
 	}
