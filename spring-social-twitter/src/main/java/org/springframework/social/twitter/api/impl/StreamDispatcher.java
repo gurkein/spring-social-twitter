@@ -23,6 +23,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.social.twitter.api.StreamDeleteEvent;
 import org.springframework.social.twitter.api.StreamListener;
 import org.springframework.social.twitter.api.StreamWarningEvent;
@@ -31,6 +33,7 @@ import org.springframework.social.twitter.api.Tweet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 class StreamDispatcher implements Runnable {
+	private Log logger = LogFactory.getLog(this.getClass());
 
 	private final List<StreamListener> listeners;
 
@@ -69,6 +72,8 @@ class StreamDispatcher implements Runnable {
 					handleDelete(line);
 				} else if (line.startsWith("{\"warning")) {
 					handleWarning(line);
+				} else {
+					logger.warn("Unprocessed stream data: " + line);
 				}
 			} catch (IOException e) {
 				// TODO: Should only happen if Jackson doesn't know how to map the line
