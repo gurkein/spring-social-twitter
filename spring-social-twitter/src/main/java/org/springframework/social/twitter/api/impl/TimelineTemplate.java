@@ -77,6 +77,14 @@ class TimelineTemplate extends AbstractTwitterOperations implements TimelineOper
 		return restTemplate.getForObject(buildUri("statuses/user_timeline.json", parameters), TweetList.class);
 	}
 
+	public List<Tweet> getUserTimeline(int pageSize, long sinceId, long maxId, MultiValueMap<String, String> parameters) {
+		requireUserAuthorization();
+		parameters = PagingUtils.buildPagingParametersWithCount(parameters, pageSize, sinceId, maxId);
+		parameters.set("include_entities", "true");
+		parameters.set("tweet_mode", "extended");
+		return restTemplate.getForObject(buildUri("statuses/user_timeline.json", parameters), TweetList.class);
+	}
+
 	public List<Tweet> getUserTimeline(String screenName) {
 		return getUserTimeline(screenName, 20, 0, 0);
 	}

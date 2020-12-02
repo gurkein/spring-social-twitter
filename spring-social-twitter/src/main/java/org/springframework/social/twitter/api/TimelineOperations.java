@@ -24,6 +24,7 @@ import org.springframework.social.ApiException;
 import org.springframework.social.DuplicateStatusException;
 import org.springframework.social.MissingAuthorizationException;
 import org.springframework.social.OperationNotPermittedException;
+import org.springframework.util.MultiValueMap;
 
 
 /**
@@ -93,6 +94,8 @@ public interface TimelineOperations {
 	 * @throws MissingAuthorizationException if TwitterTemplate was not created with OAuth credentials.
 	 */
 	List<Tweet> getUserTimeline(int pageSize, long sinceId, long maxId);
+
+	List<Tweet> getUserTimeline(int pageSize, long sinceId, long maxId, MultiValueMap<String, String> parameters);
 
 	/**
 	 * Retrieves the 20 most recent tweets posted by the given user.

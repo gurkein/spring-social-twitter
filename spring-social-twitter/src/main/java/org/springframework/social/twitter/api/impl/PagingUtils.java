@@ -38,7 +38,14 @@ class PagingUtils {
 	}
 
 	public static MultiValueMap<String, String> buildPagingParametersWithCount(int pageSize, long sinceId, long maxId) {
-		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
+		return buildPagingParametersWithCount(null, pageSize, sinceId, maxId);
+	}
+
+	public static MultiValueMap<String, String> buildPagingParametersWithCount(MultiValueMap<String, String> parameters,
+																			   int pageSize, long sinceId, long maxId) {
+		if (parameters == null) {
+			parameters = new LinkedMultiValueMap<String, String>();
+		}
 		parameters.set("count", String.valueOf(pageSize));
 		if (sinceId > 0) {
 			parameters.set("since_id", String.valueOf(sinceId));
