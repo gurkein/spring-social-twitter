@@ -48,7 +48,11 @@ class StreamReaderImpl implements StreamReader {
 	
 	public StreamReaderImpl(InputStream inputStream, List<StreamListener> listeners) {
 		this.inputStream = inputStream;
-		this.reader = new BufferedReader(new InputStreamReader(inputStream));
+		// small buffer is required for slow streams
+		// generally tweets are almost 2K but there are also some small stream messages
+		// last message waits in the queue if buffer size is big
+		// Twitter sends \r\n per 10s
+		this.reader = new BufferedReader(new InputStreamReader(inputStream), 8);
 		queue = new ConcurrentLinkedQueue<String>();
 		dispatcher = new StreamDispatcher(queue, listeners);
 		executor = new ScheduledThreadPoolExecutor(10);
